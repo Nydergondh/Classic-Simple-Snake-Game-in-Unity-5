@@ -8,7 +8,7 @@ public class ProceduralMesh : MonoBehaviour
 {
 
     Mesh mesh;
-    Positions[] postions;
+    Positions[] positions;
 
     private Vector3[] vertices;
     private int[] triangles;
@@ -38,7 +38,7 @@ public class ProceduralMesh : MonoBehaviour
 
         vertices = new Vector3[gridSize * gridSize * 4];
         triangles = new int[gridSize * gridSize * 6];
-        postions = new Positions[gridSize * gridSize];
+        positions = new Positions[gridSize * gridSize];
 
         vertexOffset = cellSize * 0.5f;
 
@@ -63,7 +63,8 @@ public class ProceduralMesh : MonoBehaviour
                 v += 4;
                 t += 6;
 
-                postions[posCount].QuadPosition = posCount; //create the grid while adding a value to the postion variable.
+                positions[posCount].QuadPosition = posCount; //create the grid while adding a value to the postion variable.
+                positions[posCount].SetNeighbours(gridSize);
                 posCount++;
             }
         }
