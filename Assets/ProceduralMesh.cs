@@ -73,8 +73,7 @@ public class ProceduralMesh : MonoBehaviour
                 posCount++;
 
             }
-        }
-        
+        }    
     }
 
     public void CreateMesh() {
