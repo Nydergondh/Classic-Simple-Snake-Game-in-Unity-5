@@ -9,6 +9,8 @@ public class ProceduralMesh : MonoBehaviour
 
     Mesh mesh;
     Positions[] positions;
+    [SerializeField] GameObject gameObejct;
+    [SerializeField] Transform parent;
 
     private Vector3[] vertices;
     private int[] triangles;
@@ -24,28 +26,28 @@ public class ProceduralMesh : MonoBehaviour
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
-
+        MakeMeshData();
+        CreateMesh();
     }
 
     // Update is called once per frame
     void Update()
     {
-        MakeMeshData();
-        CreateMesh();
+       
     }
 
     public void MakeMeshData() {
 
-        vertices = new Vector3[gridSize * gridSize * 4];
-        triangles = new int[gridSize * gridSize * 6];
-        positions = new Positions[gridSize * gridSize];
-
+        vertices = new Vector3[gridSize * gridSize * 4]; // adjusting the quantity of vertices in the grid
+        triangles = new int[gridSize * gridSize * 6]; // adjusting the quantity of triangles in the grid
+        positions = new Positions[gridSize * gridSize]; // adjusting how many positions there are in the grid
         vertexOffset = cellSize * 0.5f;
 
         int v = 0; //vertices
         int t = 0; // triangles
 
-        for (int l = 0, posCount = 1; l < gridSize ;l++) {
+        //creates one quad at every loop in the second for
+        for (int l = 0, posCount = 0; l < gridSize ;l++) {
             for (int c = 0; c < gridSize; c++) {
 
                 Vector3 cellOffset = new Vector3(l * cellSize, 0, c * cellSize);
@@ -60,12 +62,16 @@ public class ProceduralMesh : MonoBehaviour
                 triangles[t + 2] = triangles[t + 3] = v + 2;
                 triangles[t + 5] = v + 3;
 
-                v += 4;
+                v += 4; //adjust the count of were the vertices and triangles are
                 t += 6;
 
-                positions[posCount].QuadPosition = posCount; //create the grid while adding a value to the postion variable.
+                GameObject pos = Instantiate(gameObejct, new Vector3(c * cellSize, l * cellSize, 0), Quaternion.identity, parent); //create new position at the quad. 
+                positions[posCount] = pos.GetComponent<Positions>();
+
+                positions[posCount].QuadPosition = posCount+1; //create the grid while adding a value to the postion variable.
                 positions[posCount].SetNeighbours(gridSize);
                 posCount++;
+
             }
         }
         
