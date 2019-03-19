@@ -7,7 +7,7 @@ public class Snake : MonoBehaviour
     // Start is called before the first frame update
     bool isHead;
     static int snakeSize = 0;
-
+    NeighbourDirection direction;
 
     void Start()
     {
