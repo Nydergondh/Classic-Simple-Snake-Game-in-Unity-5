@@ -36,18 +36,20 @@ public class ProceduralMesh : MonoBehaviour
 
     public void MakeMeshData() {
 
-        vertices = new Vector3[gridSize * gridSize * 4]; // adjusting the quantity of vertices in the grid
-        triangles = new int[gridSize * gridSize * 6]; // adjusting the quantity of triangles in the grid
+        //vertices = new Vector3[gridSize * gridSize * 4]; // adjusting the quantity of vertices in the grid
+        //triangles = new int[gridSize * gridSize * 6]; // adjusting the quantity of triangles in the grid
         positions = new Positions[gridSize * gridSize]; // adjusting how many positions there are in the grid
         vertexOffset = cellSize * 0.5f;
 
-        int v = 0; //vertices
-        int t = 0; // triangles
+        // int v = 0; //vertices
+        // int t = 0; // triangles
 
         //creates one quad at every loop in the second for
         for (int l = 0, posCount = 0; l < gridSize ;l++) {
             for (int c = 0; c < gridSize; c++) {
-
+                
+                //CODE TO GENERATE A PROCEDURAL GRID (NOT USED)
+                /*
                 Vector3 cellOffset = new Vector3(l * cellSize, 0, c * cellSize);
 
                 vertices[v] = new Vector3(-vertexOffset, 0, -vertexOffset) + cellOffset + gridOffset;
@@ -62,7 +64,7 @@ public class ProceduralMesh : MonoBehaviour
 
                 v += 4; //adjust the count of were the vertices and triangles are
                 t += 6;
-
+                */
                 GameObject pos = Instantiate(gameObejct, new Vector3(c * cellSize, l * cellSize, 0), Quaternion.identity, parent); //create new position at the quad. 
                 positions[posCount] = pos.GetComponent<Positions>();
 

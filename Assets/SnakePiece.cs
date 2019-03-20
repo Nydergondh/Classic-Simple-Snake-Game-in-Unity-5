@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Snake : MonoBehaviour
+public class SnakePiece : MonoBehaviour
 {
-    // Start is called before the first frame update
-    bool isHead;
-    static int snakeSize = 0;
+    Positions position;
     Direction direction;
 
+    // Start is called before the first frame update
     void Start()
     {
         
@@ -19,5 +18,4 @@ public class Snake : MonoBehaviour
     {
         
     }
-
 }
