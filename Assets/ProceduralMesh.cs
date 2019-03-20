@@ -8,64 +8,53 @@ public class ProceduralMesh : MonoBehaviour
 {
 
     Mesh mesh;
-    Positions[] positions;
-    [SerializeField] GameObject gameObejct;
+    public static Positions[] positions;
+    public static int gridSize;
+
+    [SerializeField] GameObject gameObject;
     [SerializeField] Transform parent;
+    Snake snake;
 
-    private Vector3[] vertices;
-    private int[] triangles;
-
-    [SerializeField] Vector3 gridOffset;
-    [SerializeField] int gridSize;
-    [SerializeField] float cellSize;
-    private float vertexOffset;
+    [SerializeField] float cellSize;     
     
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        gridSize = 3;
         mesh = GetComponent<MeshFilter>().mesh;
         MakeMeshData();
-        CreateMesh();
+        snake = GetComponentInChildren<Snake>();
+        snake.SpawnSnakePiece();
     }
 
     // Update is called once per frame
-    void Update()
-    {
-       
+    void Update() { 
+
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            snake.Direction = Direction.East;
+            snake.Move(positions);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            snake.Direction = Direction.South;
+            snake.Move(positions);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            snake.Direction = Direction.West;
+            snake.Move(positions);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            snake.Direction = Direction.North;
+            snake.Move(positions);
+        }        
     }
 
     public void MakeMeshData() {
 
-        //vertices = new Vector3[gridSize * gridSize * 4]; // adjusting the quantity of vertices in the grid
-        //triangles = new int[gridSize * gridSize * 6]; // adjusting the quantity of triangles in the grid
         positions = new Positions[gridSize * gridSize]; // adjusting how many positions there are in the grid
-        vertexOffset = cellSize * 0.5f;
-
-        // int v = 0; //vertices
-        // int t = 0; // triangles
-
-        //creates one quad at every loop in the second for
+        
         for (int l = 0, posCount = 0; l < gridSize ;l++) {
             for (int c = 0; c < gridSize; c++) {
-                
-                //CODE TO GENERATE A PROCEDURAL GRID (NOT USED)
-                /*
-                Vector3 cellOffset = new Vector3(l * cellSize, 0, c * cellSize);
 
-                vertices[v] = new Vector3(-vertexOffset, 0, -vertexOffset) + cellOffset + gridOffset;
-                vertices[v+1] = new Vector3(-vertexOffset, 0, vertexOffset) + cellOffset + gridOffset;
-                vertices[v + 2] = new Vector3(vertexOffset, 0, -vertexOffset) + cellOffset + gridOffset;
-                vertices[v + 3] = new Vector3(vertexOffset, 0, vertexOffset) + cellOffset + gridOffset;
-
-                triangles[t] = v;
-                triangles[t+1] = triangles[t + 4] = v + 1;
-                triangles[t + 2] = triangles[t + 3] = v + 2;
-                triangles[t + 5] = v + 3;
-
-                v += 4; //adjust the count of were the vertices and triangles are
-                t += 6;
-                */
-                GameObject pos = Instantiate(gameObejct, new Vector3(c * cellSize, l * cellSize, 0), Quaternion.identity, parent); //create new position at the quad. 
+                GameObject pos = Instantiate(gameObject, new Vector3(c * cellSize, l * cellSize, 0), Quaternion.identity, parent); //create new position at the quad. 
                 positions[posCount] = pos.GetComponent<Positions>();
 
                 positions[posCount].QuadPosition = posCount+1; //create the grid while adding a value to the postion variable.
@@ -76,9 +65,4 @@ public class ProceduralMesh : MonoBehaviour
         }    
     }
 
-    public void CreateMesh() {
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.RecalculateNormals();
-    }
 }

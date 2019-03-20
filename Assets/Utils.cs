@@ -1,11 +1,12 @@
-﻿    enum Direction {
+﻿    
+    public enum Direction {
         North,
         East,
         West,
         South
     };
 
-    struct neighbours {
+    public struct neighbours {
         public  int north;
         public int south;
         public int east;

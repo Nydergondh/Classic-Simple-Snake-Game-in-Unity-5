@@ -7,7 +7,6 @@ public class Positions : MonoBehaviour {
     private bool isOccupied; // check if the snake is at this position rigth now
     private neighbours neighbour;
 
-
     // Start is called before the first frame update
     void Awake() {
         isOccupied = false;
@@ -25,6 +24,10 @@ public class Positions : MonoBehaviour {
         set { isOccupied = value; }
     }
 
+    public neighbours neighbours {
+        get { return neighbour; }
+    }
+
     public void SetNeighbours(int gridSize) {
         if (quadPosition % gridSize == 0) { //east
            neighbour.east = -1; //in case the east dosent exist
@@ -40,15 +43,15 @@ public class Positions : MonoBehaviour {
             neighbour.south  = quadPosition - gridSize; //in case South exists
         }
 
-        if (quadPosition - 1 % gridSize == 0) {//north
+        if (quadPosition + gridSize > gridSize * gridSize) {//north
             neighbour.north = -1; //in case the north dosent exist
         }
         else {
             neighbour.north = quadPosition + gridSize; //in case north exists
         }
 
-        if (quadPosition + gridSize > gridSize * gridSize) {//west
-            neighbour.west = -1; //in case the west dosent exist
+        if (quadPosition - 1 % gridSize == 0) {//west
+            neighbour.west = - 1; //in case the west dosent exist
         }
         else {
             neighbour.west = quadPosition -1; //in case west exists
