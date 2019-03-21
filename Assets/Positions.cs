@@ -29,28 +29,28 @@ public class Positions : MonoBehaviour {
     }
 
     public void SetNeighbours(int gridSize) {
-        if (quadPosition % gridSize == 0) { //east
+        if ((quadPosition + 1) % gridSize == 0) { //east
            neighbour.east = -1; //in case the east dosent exist
         }
         else {
             neighbour.east = quadPosition + 1; //in case East exists
         }
 
-        if (quadPosition - gridSize < 0) { //south
+        if (quadPosition + 1 - gridSize < 0) { //south
             neighbour.south = -1; //in case the south dosent exist
         }
         else {
             neighbour.south  = quadPosition - gridSize; //in case South exists
         }
 
-        if (quadPosition + gridSize > gridSize * gridSize) {//north
+        if (quadPosition + 1 + gridSize > gridSize * gridSize) {//north
             neighbour.north = -1; //in case the north dosent exist
         }
         else {
             neighbour.north = quadPosition + gridSize; //in case north exists
         }
 
-        if (quadPosition - 1 % gridSize == 0) {//west
+        if (quadPosition % gridSize == 0) {//west
             neighbour.west = - 1; //in case the west dosent exist
         }
         else {

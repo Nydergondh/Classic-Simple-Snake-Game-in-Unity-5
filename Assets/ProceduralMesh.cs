@@ -57,7 +57,7 @@ public class ProceduralMesh : MonoBehaviour
                 GameObject pos = Instantiate(gameObject, new Vector3(c * cellSize, l * cellSize, 0), Quaternion.identity, parent); //create new position at the quad. 
                 positions[posCount] = pos.GetComponent<Positions>();
 
-                positions[posCount].QuadPosition = posCount+1; //create the grid while adding a value to the postion variable.
+                positions[posCount].QuadPosition = posCount; //create the grid while adding a value to the postion variable.
                 positions[posCount].SetNeighbours(gridSize);
                 posCount++;
 

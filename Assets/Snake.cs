@@ -30,6 +30,7 @@ public class Snake : MonoBehaviour {
                                                                              0                                          ), Quaternion.identity, parent);
             snakeBody.Add(snakePart.GetComponent<SnakePiece>());
             snakeBody[snakeSize].Position = ProceduralMesh.positions[x + ProceduralMesh.gridSize * y];
+            print("start pos = "+ snakeBody[snakeSize].Position.QuadPosition);
             RandomDirection();
             snakeSize++;
         }
@@ -60,35 +61,42 @@ public class Snake : MonoBehaviour {
 
         foreach (SnakePiece snakePiece in snakeBody) {
 
-            if (snakePiece.Position.neighbours.east > 0 && direction == Direction.East) {
+            if (snakePiece.Position.neighbours.east >= 0 && direction == Direction.East) {
                 print(snakePiece.Position.neighbours.east);
                 snakePiece.transform.position += new Vector3(1, 0, 0);
                 snakePiece.Position.IsOcuppied = false;
+                print("Old pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position = positions[snakePiece.Position.neighbours.east];
+                print("New pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position.IsOcuppied = true;
             }
 
-            else if (snakePiece.Position.neighbours.south > 0 && direction == Direction.South) {
-                print(snakePiece.Position.neighbours.south);
+            else if (snakePiece.Position.neighbours.south >= 0 && direction == Direction.South) {                
                 snakePiece.transform.position += new Vector3(0, -1, 0);
                 snakePiece.Position.IsOcuppied = false;
+                print("Old pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position = positions[snakePiece.Position.neighbours.south];
+                print("New pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position.IsOcuppied = true;
             }
 
-            else if (snakePiece.Position.neighbours.west > 0 && direction == Direction.West) {
+            else if (snakePiece.Position.neighbours.west >= 0 && direction == Direction.West) {
                 print(snakePiece.Position.neighbours.west);
                 snakePiece.transform.position += new Vector3(-1, 0, 0);
                 snakePiece.Position.IsOcuppied = false;
+                print("Old pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position = positions[snakePiece.Position.neighbours.west];
+                print("New pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position.IsOcuppied = true;
             }            
 
-            else if(snakePiece.Position.neighbours.north > 0 && direction == Direction.North) {
+            else if(snakePiece.Position.neighbours.north >= 0 && direction == Direction.North) {
                 print(snakePiece.Position.neighbours.north);
                 snakePiece.transform.position += new Vector3(0, 1, 0);
                 snakePiece.Position.IsOcuppied = false;
+                print("Old pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position = positions[snakePiece.Position.neighbours.north];
+                print("New pos = " + snakePiece.Position.QuadPosition);
                 snakePiece.Position.IsOcuppied = true;
             }
         }
