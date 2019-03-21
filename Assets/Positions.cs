@@ -5,7 +5,7 @@ using UnityEngine;
 public class Positions : MonoBehaviour {
     private int quadPosition;
     private bool isOccupied; // check if the snake is at this position rigth now
-    int[] neighbours = new int[4];
+    private neighbours neighbour;
 
     // Start is called before the first frame update
     void Awake() {
@@ -24,33 +24,37 @@ public class Positions : MonoBehaviour {
         set { isOccupied = value; }
     }
 
+    public neighbours neighbours {
+        get { return neighbour; }
+    }
+
     public void SetNeighbours(int gridSize) {
-        if (quadPosition % gridSize == 0) { //east
-            neighbours[0] = -1; //in case the east dosent exist
+        if ((quadPosition + 1) % gridSize == 0) { //east
+           neighbour.east = -1; //in case the east dosent exist
         }
         else {
-            neighbours[0] = quadPosition + 1; //in case East exists
+            neighbour.east = quadPosition + 1; //in case East exists
         }
 
-        if (quadPosition - gridSize < 0) { //south
-            neighbours[1] = -1; //in case the south dosent exist
+        if (quadPosition + 1 - gridSize < 0) { //south
+            neighbour.south = -1; //in case the south dosent exist
         }
         else {
-            neighbours[1] = quadPosition - gridSize; //in case South exists
+            neighbour.south  = quadPosition - gridSize; //in case South exists
         }
 
-        if (quadPosition - 1 % gridSize == 0) {//north
-            neighbours[2] = -1; //in case the north dosent exist
+        if (quadPosition + 1 + gridSize > gridSize * gridSize) {//north
+            neighbour.north = -1; //in case the north dosent exist
         }
         else {
-            neighbours[2] = quadPosition + gridSize;
+            neighbour.north = quadPosition + gridSize; //in case north exists
         }
 
-        if (quadPosition + gridSize > gridSize * gridSize) {//west
-            neighbours[3] = -1; //in case the west dosent exist
+        if (quadPosition % gridSize == 0) {//west
+            neighbour.west = - 1; //in case the west dosent exist
         }
         else {
-            neighbours[3] = -1; //in case west exists
+            neighbour.west = quadPosition -1; //in case west exists
         }
     }
 
