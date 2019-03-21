@@ -13,6 +13,7 @@ public class ProceduralMesh : MonoBehaviour
 
     [SerializeField] GameObject gameObject;
     [SerializeField] Transform parent;
+
     Snake snake;
 
     [SerializeField] float cellSize;     
@@ -30,21 +31,25 @@ public class ProceduralMesh : MonoBehaviour
     void Update() { 
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
-            snake.Direction = Direction.East;
-            snake.Move(positions);
+
+            snake.Move(positions, Direction.East);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-            snake.Direction = Direction.South;
-            snake.Move(positions);
+
+            snake.Move(positions, Direction.South);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-            snake.Direction = Direction.West;
-            snake.Move(positions);
+
+            snake.Move(positions, Direction.West);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            snake.Direction = Direction.North;
-            snake.Move(positions);
-        }        
+            
+            snake.Move(positions, Direction.North);
+        }
+        else if (Input.GetKeyDown(KeyCode.Space)) {
+
+            snake.SpawnSnakePiece();
+        }
     }
 
     public void MakeMeshData() {
