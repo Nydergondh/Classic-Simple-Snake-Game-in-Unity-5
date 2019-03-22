@@ -15,6 +15,7 @@ public class ProceduralMesh : MonoBehaviour
     [SerializeField] Transform parent;
 
     Snake snake;
+    Food food;
 
     [SerializeField] float cellSize;     
     
@@ -23,8 +24,12 @@ public class ProceduralMesh : MonoBehaviour
         gridSize = 3;
         mesh = GetComponent<MeshFilter>().mesh;
         MakeMeshData();
+
         snake = GetComponentInChildren<Snake>();
         snake.SpawnSnakePiece();
+
+        food = GetComponentInChildren<Food>();
+        food.SpawnFood();
     }
 
     // Update is called once per frame
