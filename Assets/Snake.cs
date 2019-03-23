@@ -45,9 +45,7 @@ public class Snake : MonoBehaviour {
             snakeSize++;
             print("Snake Pieces"+ snakeBody.Count);
         }
-        else {
-            SceneManager.LoadScene(0);
-        }
+
 
     }
 
@@ -55,101 +53,112 @@ public class Snake : MonoBehaviour {
 
         //checks if the snake is going to eat food (if yes, spawns a new SnakePiece imitating the last snakeBody index parameters)
         //increments snakeSize if the snake ate food
-        if (CheckEat(dir)) {
-            print("Spawned Piece");
-            SpawnSnakePiece();
-        }
+        if (!CheckDead(dir)) {
 
-        for (int lastPos = snakeSize-1; lastPos >= 0; lastPos--) {
 
-            if (lastPos == 0) {
-
-                if (snakeBody[lastPos].Position.Neighbours.east >= 0 && dir == Direction.East) {
-                    
-                    snakeBody[lastPos].Direction = dir;
-                    snakeBody[lastPos].transform.position += new Vector3(1, 0, 0); // consider using Vector3.up/left/rigth/down
-                    snakeBody[lastPos].Position.IsOcuppied = false;
-                    snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.east];
-                    snakeBody[lastPos].Position.IsOcuppied = true;
-                }
-
-                else if (snakeBody[lastPos].Position.Neighbours.south >= 0 && dir == Direction.South) {
-
-                    snakeBody[lastPos].Direction = dir;
-                    snakeBody[lastPos].transform.position += new Vector3(0, -1, 0);
-                    snakeBody[lastPos].Position.IsOcuppied = false;
-                    snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.south];
-                    snakeBody[lastPos].Position.IsOcuppied = true;
-                }
-
-                else if (snakeBody[lastPos].Position.Neighbours.west >= 0 && dir == Direction.West) {
-
-                    snakeBody[lastPos].Direction = dir;
-                    snakeBody[lastPos].transform.position += new Vector3(-1, 0, 0);
-                    snakeBody[lastPos].Position.IsOcuppied = false;
-                    snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.west];
-                    snakeBody[lastPos].Position.IsOcuppied = true;
-                }
-
-                else if (snakeBody[lastPos].Position.Neighbours.north >= 0 && dir == Direction.North) {
-
-                    snakeBody[lastPos].Direction = dir;
-                    snakeBody[lastPos].transform.position += new Vector3(0, 1, 0);
-                    snakeBody[lastPos].Position.IsOcuppied = false;
-                    snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.north];
-                    snakeBody[lastPos].Position.IsOcuppied = true;
-                }
+            if (CheckEat(dir)) {
+                print("Spawned Piece");
+                SpawnSnakePiece();
             }
 
-            else {
-                //checking if a piece has not just spawned. If it has spawned, then nothing will be done, otherwise movement will occur.
-                //since spawned pieces mimic element of the last position of the List of the snake before moving, there is no need to move it.
-                if ( !CheckEat(dir) || (lastPos != snakeSize - 1 && CheckEat(dir)) ) {
+            for (int lastPos = snakeSize - 1; lastPos >= 0; lastPos--) {
 
-                    if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
+                if (lastPos == 0) {
 
-                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                    if (snakeBody[lastPos].Position.Neighbours.east >= 0 && dir == Direction.East) {
+
+                        snakeBody[lastPos].Direction = dir;
                         snakeBody[lastPos].transform.position += new Vector3(1, 0, 0); // consider using Vector3.up/left/rigth/down
                         snakeBody[lastPos].Position.IsOcuppied = false;
                         snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.east];
                         snakeBody[lastPos].Position.IsOcuppied = true;
                     }
 
-                    else if (snakeBody[lastPos].Position.Neighbours.south >= 0 && snakeBody[lastPos - 1].Direction == Direction.South) {
+                    else if (snakeBody[lastPos].Position.Neighbours.south >= 0 && dir == Direction.South) {
 
-                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                        snakeBody[lastPos].Direction = dir;
                         snakeBody[lastPos].transform.position += new Vector3(0, -1, 0);
                         snakeBody[lastPos].Position.IsOcuppied = false;
                         snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.south];
                         snakeBody[lastPos].Position.IsOcuppied = true;
                     }
 
-                    else if (snakeBody[lastPos].Position.Neighbours.west >= 0 && snakeBody[lastPos - 1].Direction == Direction.West) {
+                    else if (snakeBody[lastPos].Position.Neighbours.west >= 0 && dir == Direction.West) {
 
-                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                        snakeBody[lastPos].Direction = dir;
                         snakeBody[lastPos].transform.position += new Vector3(-1, 0, 0);
                         snakeBody[lastPos].Position.IsOcuppied = false;
                         snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.west];
                         snakeBody[lastPos].Position.IsOcuppied = true;
                     }
 
-                    else if (snakeBody[lastPos].Position.Neighbours.north >= 0 && snakeBody[lastPos - 1].Direction == Direction.North) {
+                    else if (snakeBody[lastPos].Position.Neighbours.north >= 0 && dir == Direction.North) {
 
-                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                        snakeBody[lastPos].Direction = dir;
                         snakeBody[lastPos].transform.position += new Vector3(0, 1, 0);
                         snakeBody[lastPos].Position.IsOcuppied = false;
                         snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.north];
                         snakeBody[lastPos].Position.IsOcuppied = true;
                     }
+                }
+
+                else {
+                    //checking if a piece has not just spawned. If it has spawned, then nothing will be done, otherwise movement will occur.
+                    //since spawned pieces mimic element of the last position of the List of the snake before moving, there is no need to move it.
+                    if (!CheckEat(dir) || (lastPos != snakeSize - 1 && CheckEat(dir))) {
+
+                        if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
+
+                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                            snakeBody[lastPos].transform.position += new Vector3(1, 0, 0); // consider using Vector3.up/left/rigth/down
+                            snakeBody[lastPos].Position.IsOcuppied = false;
+                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.east];
+                            snakeBody[lastPos].Position.IsOcuppied = true;
+                        }
+
+                        else if (snakeBody[lastPos].Position.Neighbours.south >= 0 && snakeBody[lastPos - 1].Direction == Direction.South) {
+
+                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                            snakeBody[lastPos].transform.position += new Vector3(0, -1, 0);
+                            snakeBody[lastPos].Position.IsOcuppied = false;
+                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.south];
+                            snakeBody[lastPos].Position.IsOcuppied = true;
+                        }
+
+                        else if (snakeBody[lastPos].Position.Neighbours.west >= 0 && snakeBody[lastPos - 1].Direction == Direction.West) {
+
+                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                            snakeBody[lastPos].transform.position += new Vector3(-1, 0, 0);
+                            snakeBody[lastPos].Position.IsOcuppied = false;
+                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.west];
+                            snakeBody[lastPos].Position.IsOcuppied = true;
+                        }
+
+                        else if (snakeBody[lastPos].Position.Neighbours.north >= 0 && snakeBody[lastPos - 1].Direction == Direction.North) {
+
+                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                            snakeBody[lastPos].transform.position += new Vector3(0, 1, 0);
+                            snakeBody[lastPos].Position.IsOcuppied = false;
+                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.north];
+                            snakeBody[lastPos].Position.IsOcuppied = true;
+                        }
+
+                    }
 
                 }
 
             }
-            
-        }
-    
-    }
 
+        }
+
+        else if (snakeSize == ProceduralMesh.gridSize * ProceduralMesh.gridSize) {
+            WinGame();
+        }
+        else {
+            Dying();
+        }
+
+    }
     public bool CheckEat(Direction dir) {
 
         if (dir == Direction.North && snakeBody[0].Position.Neighbours.north >= 0 && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].HasFood) {
@@ -188,22 +197,28 @@ public class Snake : MonoBehaviour {
 
     bool CheckDead(Direction dir) {
 
-        if (dir == Direction.East && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.west].IsOcuppied) {
+        if ((dir == Direction.East && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.west].IsOcuppied)
+             || (dir == Direction.East && snakeBody[0].Position.Neighbours.east == -1)) {
             return true;
         }
 
-        else if(dir == Direction.South && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied) {
+        else if ((dir == Direction.South && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied)
+                  || (dir == Direction.South && snakeBody[0].Position.Neighbours.south == -1)) {
             return true;
         }
 
-        else if (dir == Direction.West && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied) {
-            return true;
+        else if ((dir == Direction.West && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied)
+                  || (dir == Direction.West &&snakeBody[0].Position.Neighbours.west == -1)) {
+             return true;
         }
 
-        else if (dir == Direction.North && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].IsOcuppied) {
-            return true;
+        else if ((dir == Direction.North && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].IsOcuppied) 
+                 || (dir == Direction.North && snakeBody[0].Position.Neighbours.north == -1)) {
+             return true;
         }
-
-        return false;
+        else {
+            return false;
+        }
+        
     }
 }
