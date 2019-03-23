@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(MeshFilter), (typeof(MeshRenderer)))] 
-public class ProceduralMesh : MonoBehaviour
-{
+[RequireComponent(typeof(MeshFilter), (typeof(MeshRenderer)))]
+public class ProceduralMesh : MonoBehaviour {
 
     Mesh mesh;
     public static Positions[] positions;
@@ -15,20 +14,25 @@ public class ProceduralMesh : MonoBehaviour
     [SerializeField] Transform parent;
 
     Snake snake;
+    Food food;
 
-    [SerializeField] float cellSize;     
-    
+    [SerializeField] float cellSize;
+
     // Start is called before the first frame update
     void Start() {
         gridSize = 3;
         mesh = GetComponent<MeshFilter>().mesh;
         MakeMeshData();
+
         snake = GetComponentInChildren<Snake>();
         snake.SpawnSnakePiece();
+
+        food = GetComponentInChildren<Food>();
+        food.SpawnFood();
     }
 
     // Update is called once per frame
-    void Update() { 
+    void Update() {
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
 
@@ -43,7 +47,7 @@ public class ProceduralMesh : MonoBehaviour
             snake.Move(positions, Direction.West);
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow)) {
-            
+
             snake.Move(positions, Direction.North);
         }
         else if (Input.GetKeyDown(KeyCode.Space)) {
@@ -55,8 +59,8 @@ public class ProceduralMesh : MonoBehaviour
     public void MakeMeshData() {
 
         positions = new Positions[gridSize * gridSize]; // adjusting how many positions there are in the grid
-        
-        for (int l = 0, posCount = 0; l < gridSize ;l++) {
+
+        for (int l = 0, posCount = 0; l < gridSize; l++) {
             for (int c = 0; c < gridSize; c++) {
 
                 GameObject pos = Instantiate(gameObject, new Vector3(c * cellSize, l * cellSize, 0), Quaternion.identity, parent); //create new position at the quad. 
@@ -67,7 +71,7 @@ public class ProceduralMesh : MonoBehaviour
                 posCount++;
 
             }
-        }    
+        }
     }
 
 }

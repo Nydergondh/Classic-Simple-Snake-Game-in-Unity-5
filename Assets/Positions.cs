@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class Positions : MonoBehaviour {
     private int quadPosition;
-    private bool isOccupied; // check if the snake is at this position rigth now
+    private bool isOccupied = false;
+    private bool hasFood = false;
     private neighbours neighbour;
-
-    // Start is called before the first frame update
-    void Awake() {
-        isOccupied = false;
-    }
 
     // Update is called once per frame
 
@@ -24,7 +20,12 @@ public class Positions : MonoBehaviour {
         set { isOccupied = value; }
     }
 
-    public neighbours neighbours {
+    public bool HasFood {
+        get { return hasFood; }
+        set { hasFood = value; }
+    }
+
+    public neighbours Neighbours {
         get { return neighbour; }
     }
 

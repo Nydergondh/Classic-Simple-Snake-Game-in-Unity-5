@@ -17,7 +17,7 @@ public class SnakePiece : MonoBehaviour
             isHead = true;
         }
     }
-
+    
     public Direction Direction {
         get { return direction; }
         set { direction = value; }
