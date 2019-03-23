@@ -196,7 +196,7 @@ public class Snake : MonoBehaviour {
     }
 
     bool CheckDead(Direction dir) {
-
+        //problem with the tests getting out of bounds if the player si close to an edge
         if ((dir == Direction.East && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.west].IsOcuppied)
              || (dir == Direction.East && snakeBody[0].Position.Neighbours.east == -1)) {
             return true;
@@ -216,6 +216,7 @@ public class Snake : MonoBehaviour {
                  || (dir == Direction.North && snakeBody[0].Position.Neighbours.north == -1)) {
              return true;
         }
+
         else {
             return false;
         }
