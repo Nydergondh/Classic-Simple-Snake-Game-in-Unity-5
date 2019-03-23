@@ -74,9 +74,4 @@ public class ProceduralMesh : MonoBehaviour {
         }
     }
 
-    public int GridSize{
-        get{return gridSize;}
-        set{gridSize = value;}
-    }
-
 }

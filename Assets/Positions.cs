@@ -25,7 +25,7 @@ public class Positions : MonoBehaviour {
         set { hasFood = value; }
     }
 
-    public neighbours neighbours {
+    public neighbours Neighbours {
         get { return neighbour; }
     }
 

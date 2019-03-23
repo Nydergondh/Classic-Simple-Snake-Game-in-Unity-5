@@ -20,9 +20,6 @@ public class Food : MonoBehaviour {
             }
         }
         int randPos = Random.Range(0, nonOccupiedPos.Count);
-        print(randPos);
-        print(nonOccupiedPos.Count);
-        print(ProceduralMesh.positions[randPos].gameObject.name);
         GameObject snakePart = Instantiate(foodObject, new Vector3(ProceduralMesh.positions[randPos].gameObject.transform.position.x,
                                                                    ProceduralMesh.positions[randPos].gameObject.transform.position.y,
                                                                    ProceduralMesh.positions[randPos].gameObject.transform.position.z), Quaternion.identity, parent);
