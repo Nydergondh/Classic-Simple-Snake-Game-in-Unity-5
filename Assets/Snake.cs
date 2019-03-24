@@ -57,7 +57,6 @@ public class Snake : MonoBehaviour {
 
 
             if (CheckEat(dir)) {
-                print("Spawned Piece");
                 SpawnSnakePiece();
             }
 
@@ -102,53 +101,48 @@ public class Snake : MonoBehaviour {
                     }
                 }
 
-                else {
+                else if (!CheckEat(dir) || (lastPos != snakeSize - 1 && CheckEat(dir))) {
                     //checking if a piece has not just spawned. If it has spawned, then nothing will be done, otherwise movement will occur.
-                    //since spawned pieces mimic element of the last position of the List of the snake before moving, there is no need to move it.
-                    if (!CheckEat(dir) || (lastPos != snakeSize - 1 && CheckEat(dir))) {
+                    //since spawned pieces mimic element of the last position of the List of the snake before moving, there is no need to move it
+                    if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
 
-                        if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
+                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                        snakeBody[lastPos].transform.position += new Vector3(1, 0, 0); // consider using Vector3.up/left/rigth/down
+                        snakeBody[lastPos].Position.IsOcuppied = false;
+                        snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.east];
+                        snakeBody[lastPos].Position.IsOcuppied = true;
+                    }
 
-                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
-                            snakeBody[lastPos].transform.position += new Vector3(1, 0, 0); // consider using Vector3.up/left/rigth/down
-                            snakeBody[lastPos].Position.IsOcuppied = false;
-                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.east];
-                            snakeBody[lastPos].Position.IsOcuppied = true;
-                        }
+                    else if (snakeBody[lastPos].Position.Neighbours.south >= 0 && snakeBody[lastPos - 1].Direction == Direction.South) {
 
-                        else if (snakeBody[lastPos].Position.Neighbours.south >= 0 && snakeBody[lastPos - 1].Direction == Direction.South) {
+                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                        snakeBody[lastPos].transform.position += new Vector3(0, -1, 0);
+                        snakeBody[lastPos].Position.IsOcuppied = false;
+                        snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.south];
+                        snakeBody[lastPos].Position.IsOcuppied = true;
+                    }
 
-                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
-                            snakeBody[lastPos].transform.position += new Vector3(0, -1, 0);
-                            snakeBody[lastPos].Position.IsOcuppied = false;
-                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.south];
-                            snakeBody[lastPos].Position.IsOcuppied = true;
-                        }
+                    else if (snakeBody[lastPos].Position.Neighbours.west >= 0 && snakeBody[lastPos - 1].Direction == Direction.West) {
 
-                        else if (snakeBody[lastPos].Position.Neighbours.west >= 0 && snakeBody[lastPos - 1].Direction == Direction.West) {
+                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                        snakeBody[lastPos].transform.position += new Vector3(-1, 0, 0);
+                        snakeBody[lastPos].Position.IsOcuppied = false;
+                        snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.west];
+                        snakeBody[lastPos].Position.IsOcuppied = true;
+                    }
 
-                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
-                            snakeBody[lastPos].transform.position += new Vector3(-1, 0, 0);
-                            snakeBody[lastPos].Position.IsOcuppied = false;
-                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.west];
-                            snakeBody[lastPos].Position.IsOcuppied = true;
-                        }
+                    else if (snakeBody[lastPos].Position.Neighbours.north >= 0 && snakeBody[lastPos - 1].Direction == Direction.North) {
 
-                        else if (snakeBody[lastPos].Position.Neighbours.north >= 0 && snakeBody[lastPos - 1].Direction == Direction.North) {
-
-                            snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
-                            snakeBody[lastPos].transform.position += new Vector3(0, 1, 0);
-                            snakeBody[lastPos].Position.IsOcuppied = false;
-                            snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.north];
-                            snakeBody[lastPos].Position.IsOcuppied = true;
-                        }
-
+                        snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
+                        snakeBody[lastPos].transform.position += new Vector3(0, 1, 0);
+                        snakeBody[lastPos].Position.IsOcuppied = false;
+                        snakeBody[lastPos].Position = positions[snakeBody[lastPos].Position.Neighbours.north];
+                        snakeBody[lastPos].Position.IsOcuppied = true;
                     }
 
                 }
 
             }
-
         }
 
         else if (snakeSize == ProceduralMesh.gridSize * ProceduralMesh.gridSize) {
@@ -181,6 +175,7 @@ public class Snake : MonoBehaviour {
         else {
             return false;
         }
+
     }
 
     IEnumerator WinGame() {
@@ -230,4 +225,5 @@ public class Snake : MonoBehaviour {
         }
         
     }
+
 }
