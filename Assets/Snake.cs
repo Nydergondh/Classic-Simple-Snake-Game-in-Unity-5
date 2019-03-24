@@ -197,24 +197,32 @@ public class Snake : MonoBehaviour {
 
     bool CheckDead(Direction dir) {
         //problem with the tests getting out of bounds if the player si close to an edge
-        if ((dir == Direction.East && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.west].IsOcuppied)
-             || (dir == Direction.East && snakeBody[0].Position.Neighbours.east == -1)) {
+        if (dir == Direction.East && dir == Direction.East && snakeBody[0].Position.Neighbours.east == -1) {
+            return true;
+        }
+        else if (dir == Direction.East && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.east].IsOcuppied) {
             return true;
         }
 
-        else if ((dir == Direction.South && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied)
-                  || (dir == Direction.South && snakeBody[0].Position.Neighbours.south == -1)) {
+        else if (dir == Direction.South && dir == Direction.South && snakeBody[0].Position.Neighbours.south == -1) {
+            return true;
+        }
+        else if (dir == Direction.South && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied) {
             return true;
         }
 
-        else if ((dir == Direction.West && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied)
-                  || (dir == Direction.West &&snakeBody[0].Position.Neighbours.west == -1)) {
+        else if (dir == Direction.West && dir == Direction.West &&snakeBody[0].Position.Neighbours.west == -1) {
              return true;
         }
+        else if (dir == Direction.West && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.west].IsOcuppied) {
+            return true;
+        }
 
-        else if ((dir == Direction.North && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].IsOcuppied) 
-                 || (dir == Direction.North && snakeBody[0].Position.Neighbours.north == -1)) {
+        else if (dir == Direction.North && dir == Direction.North && snakeBody[0].Position.Neighbours.north == -1) {
              return true;
+        }
+        else if (dir == Direction.North && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].IsOcuppied) {
+            return true;
         }
 
         else {
