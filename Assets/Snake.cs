@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Snake : MonoBehaviour {
 
@@ -10,6 +9,7 @@ public class Snake : MonoBehaviour {
     [SerializeField] Transform parent;
     List<SnakePiece> snakeBody;
 
+    private bool isDead = false;
     public static int snakeSize = 0;
 
     //variable created just to not use "ProceduralMesh.gridSize * ProceduralMesh.gridSize" everytime
@@ -29,8 +29,8 @@ public class Snake : MonoBehaviour {
             snakeBody.Add(snakePart.GetComponent<SnakePiece>());
             snakeBody[snakeSize].Position = ProceduralMesh.positions[x + ProceduralMesh.gridSize * y];
             snakeBody[snakeSize].Position.IsOcuppied = true;
-            snakeBody[snakeSize].RandomDirection();
             snakeSize++;
+
         }
 
         else if(snakeSize < ProceduralMesh.gridSize * ProceduralMesh.gridSize) {
@@ -44,11 +44,9 @@ public class Snake : MonoBehaviour {
             snakeBody[snakeSize].Direction = snakeBody[snakeSize-1].Direction;
             snakeSize++;
         }
-
-
     }
 
-    public void Move(Positions[] positions, Direction dir) {
+    public bool Move(Positions[] positions, Direction dir) {
 
         int sSize;
 
@@ -63,7 +61,7 @@ public class Snake : MonoBehaviour {
             for (int lastPos = sSize - 1; lastPos >= 0; lastPos--) {
 
                 if (lastPos == 0 && snakeBody.Count == 1) {
-
+                    print("Got here 0");
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && dir == Direction.East) {
 
                         snakeBody[lastPos].Direction = dir;
@@ -102,7 +100,7 @@ public class Snake : MonoBehaviour {
                 }
 
                 else if (lastPos == 0 && snakeBody.Count > 1) {
-
+                    print("Got here 1");
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && dir == Direction.East) {
 
                         snakeBody[lastPos].Direction = dir;
@@ -141,7 +139,7 @@ public class Snake : MonoBehaviour {
                 }
 
                 else if (lastPos < snakeSize - 1) {
-
+                    print("Got here 2");
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
 
                         snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
@@ -180,7 +178,7 @@ public class Snake : MonoBehaviour {
                 }
 
                 else if (lastPos == snakeSize - 1) {
-
+                    print("Got here 3");
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
 
                         snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
@@ -218,16 +216,19 @@ public class Snake : MonoBehaviour {
                     }
                 }
             }
+            //return false (player not dead and moved)
+            print(isDead);
+            return isDead;
+
         }
 
-        else if (snakeSize == ProceduralMesh.gridSize * ProceduralMesh.gridSize) {
-            WinGame();
-        }
         else {
-            Dying();
+            print(isDead);
+            //player died
+            return isDead;
         }
-
     }
+
     public bool CheckEat(Direction dir) {
 
         if (dir == Direction.North && snakeBody[0].Position.Neighbours.north >= 0 && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].HasFood) {
@@ -253,49 +254,46 @@ public class Snake : MonoBehaviour {
 
     }
 
-    IEnumerator WinGame() {
-        print("You Won!!!");
-        yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene(0);
-    }
-
-    IEnumerator Dying() {
-        print("You Died.");
-        yield return new WaitForSeconds(5f);
-        SceneManager.LoadScene(0);
-    }
-
     bool CheckDead(Direction dir) {
         //problem with the tests getting out of bounds if the player si close to an edge
         if (dir == Direction.East && dir == Direction.East && snakeBody[0].Position.Neighbours.east == -1) {
-            return true;
+            isDead = true;
+            return isDead;
         }
         else if (dir == Direction.East && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.east].IsOcuppied) {
-            return true;
+            isDead = true;
+            return isDead;
         }
 
         else if (dir == Direction.South && dir == Direction.South && snakeBody[0].Position.Neighbours.south == -1) {
-            return true;
+            isDead = true;
+            return isDead;
         }
         else if (dir == Direction.South && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.south].IsOcuppied) {
-            return true;
+            isDead = true;
+            return isDead;
         }
 
         else if (dir == Direction.West && dir == Direction.West &&snakeBody[0].Position.Neighbours.west == -1) {
-             return true;
+            isDead = true;
+            return isDead;
         }
         else if (dir == Direction.West && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.west].IsOcuppied) {
-            return true;
+            isDead = true;
+            return isDead;
         }
 
         else if (dir == Direction.North && dir == Direction.North && snakeBody[0].Position.Neighbours.north == -1) {
-             return true;
+            isDead = true;
+            return isDead;
         }
         else if (dir == Direction.North && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].IsOcuppied) {
-            return true;
+            isDead = true;
+            return isDead;
         }
 
         else {
+            isDead = false;
             return false;
         }
         
