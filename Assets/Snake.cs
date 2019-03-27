@@ -22,17 +22,19 @@ public class Snake : MonoBehaviour {
         int x, y;
 
         if (snakeSize == 0) {
-
-            GameObject snakePart = Instantiate(snakePieceObejct, new Vector3(x = Random.Range(0, ProceduralMesh.gridSize),
-                                                                             y = Random.Range(0, ProceduralMesh.gridSize),
+            //spawn a game object in an x and y value that is not located in an edge of the Board, so that there are no colisions
+            //with the walls when the game starts
+            GameObject snakePart = Instantiate(snakePieceObejct, new Vector3(x = Random.Range(1, ProceduralMesh.gridSize-1),
+                                                                             y = Random.Range(1, ProceduralMesh.gridSize-1),
                                                                              0), Quaternion.identity, parent);
+            print(x + " " + y);
             snakeBody.Add(snakePart.GetComponent<SnakePiece>());
             snakeBody[snakeSize].Position = ProceduralMesh.positions[x + ProceduralMesh.gridSize * y];
             snakeBody[snakeSize].Position.IsOcuppied = true;
             snakeSize++;
 
         }
-
+        //spawn a piece of the snake in the last position that the last piece is located
         else if(snakeSize < ProceduralMesh.gridSize * ProceduralMesh.gridSize) {
 
             GameObject snakePart = Instantiate(snakePieceObejct, new Vector3(snakeBody[snakeSize-1].transform.position.x, 
@@ -46,6 +48,9 @@ public class Snake : MonoBehaviour {
         }
     }
 
+    //This method is the reponsible for moving the snake in certain the direction the player chooses (up, rigth, down and left).
+    //To this project I decide to do the movement based on the LAST POSITION TO THE FIRST, so that is easier to spawn pieces in 
+    //the last position of the snake. The code is not optimal, but it works.
     public bool Move(Positions[] positions, Direction dir) {
 
         int sSize;
@@ -59,9 +64,9 @@ public class Snake : MonoBehaviour {
             }
 
             for (int lastPos = sSize - 1; lastPos >= 0; lastPos--) {
-
+                //if the snake has only on piece, set the last pos (Occupied) to false, since no piece is going to be there.
                 if (lastPos == 0 && snakeBody.Count == 1) {
-                    print("Got here 0");
+
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && dir == Direction.East) {
 
                         snakeBody[lastPos].Direction = dir;
@@ -98,9 +103,10 @@ public class Snake : MonoBehaviour {
                         snakeBody[lastPos].Position.IsOcuppied = true;
                     }
                 }
-
+                //if is the first positios (head of the Snake) and the snake has more than one piece, then set the new position (Occupied) to true,
+                //and let the old one the way it is (true), so that the next piece of the snake can occupie that position
                 else if (lastPos == 0 && snakeBody.Count > 1) {
-                    print("Got here 1");
+
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && dir == Direction.East) {
 
                         snakeBody[lastPos].Direction = dir;
@@ -137,9 +143,10 @@ public class Snake : MonoBehaviour {
                         snakeBody[lastPos].Position.IsOcuppied = true;
                     }
                 }
-
+                //if is not the last position of the snake (the botton of the list), then set the new position (Occupied) to true,
+                //and let the old one the way it is (true), so that the next piece of the snake can occupie that position
                 else if (lastPos < snakeSize - 1) {
-                    print("Got here 2");
+
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
 
                         snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
@@ -176,9 +183,9 @@ public class Snake : MonoBehaviour {
                         snakeBody[lastPos].Position.IsOcuppied = true;
                     }
                 }
-
+                //if the snake is at its last position set the old pos (Occupied) to false, since there is no pieces occuping that spot anymore
                 else if (lastPos == snakeSize - 1) {
-                    print("Got here 3");
+
                     if (snakeBody[lastPos].Position.Neighbours.east >= 0 && snakeBody[lastPos - 1].Direction == Direction.East) {
 
                         snakeBody[lastPos].Direction = snakeBody[lastPos - 1].Direction;
@@ -228,7 +235,7 @@ public class Snake : MonoBehaviour {
             return isDead;
         }
     }
-
+    //check if the snake as eated something
     public bool CheckEat(Direction dir) {
 
         if (dir == Direction.North && snakeBody[0].Position.Neighbours.north >= 0 && ProceduralMesh.positions[snakeBody[0].Position.Neighbours.north].HasFood) {
@@ -255,7 +262,7 @@ public class Snake : MonoBehaviour {
     }
 
     bool CheckDead(Direction dir) {
-        //problem with the tests getting out of bounds if the player si close to an edge
+        //problem with the tests getting out of bounds if the player if close to an edge
         if (dir == Direction.East && dir == Direction.East && snakeBody[0].Position.Neighbours.east == -1) {
             isDead = true;
             return isDead;
