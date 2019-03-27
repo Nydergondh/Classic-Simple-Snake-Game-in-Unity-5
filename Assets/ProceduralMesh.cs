@@ -20,7 +20,7 @@ public class ProceduralMesh : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        gridSize = 3;
+        gridSize = 5;
         mesh = GetComponent<MeshFilter>().mesh;
         MakeMeshData();
 
@@ -33,27 +33,32 @@ public class ProceduralMesh : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (Input.anyKeyDown){
+            if (Input.GetKeyDown(KeyCode.RightArrow)) {
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+                snake.Move(positions, Direction.East);
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 
-            snake.Move(positions, Direction.East);
+                snake.Move(positions, Direction.South);
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+
+                snake.Move(positions, Direction.West);
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+
+                snake.Move(positions, Direction.North);
+            }
+            else if (Input.GetKeyDown(KeyCode.Space)) {
+
+                snake.SpawnSnakePiece();
+            }
+            foreach (Positions pos in positions) {
+                print(pos.QuadPosition + " " + pos.IsOcuppied);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
 
-            snake.Move(positions, Direction.South);
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-
-            snake.Move(positions, Direction.West);
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow)) {
-
-            snake.Move(positions, Direction.North);
-        }
-        else if (Input.GetKeyDown(KeyCode.Space)) {
-
-            snake.SpawnSnakePiece();
-        }
     }
 
     public void MakeMeshData() {
