@@ -22,6 +22,7 @@ public class ProceduralMesh : MonoBehaviour {
 
     private bool isMoving;
     private bool died;
+    private bool hasStarted = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -31,38 +32,45 @@ public class ProceduralMesh : MonoBehaviour {
         isMoving = false;
         dirMove = RandomDirection();
 
+        //generate the board
         mesh = GetComponent<MeshFilter>().mesh;
         MakeMeshData();
 
+        //spawns the first snake piece
         snake = GetComponentInChildren<Snake>();
         snake.SpawnSnakePiece();
 
+        //spawns the first food
         food = GetComponentInChildren<Food>();
         food.SpawnFood();
+
+        //waits for player input to move
 
     }
 
     // Update is called once per frame
     void Update() {
 
-        if (Input.anyKeyDown){
 
-            if (Input.GetKeyDown(KeyCode.RightArrow)) {
-                dirMove = Direction.East;
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow)) {
-                dirMove = Direction.South;
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-                dirMove = Direction.West;
-            }
-            else if (Input.GetKeyDown(KeyCode.UpArrow)) {
-                dirMove = Direction.North;
+        if (hasStarted) {
+
+            if (Input.anyKeyDown) {
+                ChooseDirection();
             }
 
+            TryToMove();
         }
 
-        //consider implementing delegates to stop continous call of if statement
+        else {
+            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.UpArrow)) {
+                StartGame();
+            }
+        }
+
+    }
+
+    private void TryToMove() {
+
         if (!isMoving) {
 
             if (!died) {
@@ -74,10 +82,10 @@ public class ProceduralMesh : MonoBehaviour {
                 StartCoroutine(WinGame());
             }
 
-            else if(died) {
+            else if (died) {
                 StartCoroutine(Dying());
             }
-            
+
         }
 
     }
@@ -102,6 +110,7 @@ public class ProceduralMesh : MonoBehaviour {
         }
 
     }
+
     //move the snake in an interval of 0.5 sec
     IEnumerator MoveSnake() {
 
@@ -148,4 +157,28 @@ public class ProceduralMesh : MonoBehaviour {
         }
     }
 
+    private void StartGame() {
+        
+        ChooseDirection();
+        hasStarted = true;
+                
+    }
+
+    private void ChooseDirection() {
+
+        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+            dirMove = Direction.East;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) {
+            dirMove = Direction.South;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+            dirMove = Direction.West;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow)) {
+            dirMove = Direction.North;
+        }  
+
+    }
+    
 }
