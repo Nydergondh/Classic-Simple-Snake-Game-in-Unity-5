@@ -4,15 +4,21 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour {
 
+    public static Snake Instance { get; private set; }
+
     // Start is called before the first frame update
     [SerializeField] GameObject snakePieceObejct;
     [SerializeField] Transform parent;
     List<SnakePiece> snakeBody;
 
     private bool isDead = false;
-    public static int snakeSize = 0;
+    public int snakeSize = 0;
 
     //variable created just to not use "ProceduralMesh.gridSize * ProceduralMesh.gridSize" everytime
+
+    void Awake() {
+        Instance = this;
+    }
 
     void Start() {
         snakeBody = new List<SnakePiece>();

@@ -13,7 +13,7 @@ public class SnakePiece : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (Snake.snakeSize == 0) {
+        if (Snake.Instance.snakeSize == 0) {
             isHead = true;
         }
     }
