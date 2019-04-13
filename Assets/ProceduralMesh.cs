@@ -65,18 +65,21 @@ public class ProceduralMesh : MonoBehaviour {
         //consider implementing delegates to stop continous call of if statement
         if (!isMoving) {
 
-            isMoving = true;
-            StartCoroutine(MoveSnake());
-            if (died) {
-                if (Snake.snakeSize == 9) {
-                    StartCoroutine(WinGame());
-                }
-                else {
-                    StartCoroutine(Dying());
-                }
+            if (!died) {
+                isMoving = true;
+                StartCoroutine(MoveSnake());
             }
+
+            if (died && snake.snakeSize == positions.Length) {
+                StartCoroutine(WinGame());
+            }
+
+            else if(died) {
+                StartCoroutine(Dying());
+            }
+            
         }
-        
+
     }
 
     public void MakeMeshData() {
