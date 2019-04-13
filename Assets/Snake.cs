@@ -10,9 +10,13 @@ public class Snake : MonoBehaviour {
     List<SnakePiece> snakeBody;
 
     private bool isDead = false;
-    public static int snakeSize = 0;
+    public static int snakeSize;
 
     //variable created just to not use "ProceduralMesh.gridSize * ProceduralMesh.gridSize" everytime
+
+    void Awake() {
+        snakeSize = 0;
+    }
 
     void Start() {
         snakeBody = new List<SnakePiece>();
@@ -224,13 +228,11 @@ public class Snake : MonoBehaviour {
                 }
             }
             //return false (player not dead and moved)
-            print(isDead);
             return isDead;
 
         }
 
         else {
-            print(isDead);
             //player died
             return isDead;
         }
